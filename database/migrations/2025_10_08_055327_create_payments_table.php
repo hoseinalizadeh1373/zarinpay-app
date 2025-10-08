@@ -13,7 +13,7 @@ return new class extends Migration
 {
     Schema::create('payments', function (Blueprint $table) {
         $table->id();
-        $table->string('item');               // نام آیتم انتخاب شده
+        $table->string('item')->nullable();               // نام آیتم انتخاب شده
         $table->string('name')->nullable();
         $table->string('phone')->nullable();
         $table->integer('amount');            // به تومان (عدد صحیح)

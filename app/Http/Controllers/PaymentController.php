@@ -50,6 +50,7 @@ class PaymentController extends Controller
 
           $amount = $request->amount;
           $phone = $request->phone;
+           $item = $request->item;
           $name = $request->name;
         $invoice = new Invoice;
         $invoice->amount($amount);
@@ -68,11 +69,11 @@ class PaymentController extends Controller
 
          $thing = zainpayment::config($config)
         ->callBackUrl(url("/") . '/payment/callback')
-        ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name) {
+        ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name,$item) {
             
             $payment = new Payment();
             $payment->transaction_id = $transactionId;
-            
+            $payment->item = $item;
             $payment->amount = $amount;
             $payment->name = $name;
             $payment->phone = $phone;

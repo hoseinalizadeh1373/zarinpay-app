@@ -6,6 +6,7 @@ use App\Models\Payment;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Shetabit\Multipay\Invoice;
+use Log;
 use Shetabit\Payment\Facade\Payment as zainpayment;
 
 class PaymentController extends Controller

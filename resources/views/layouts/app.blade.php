@@ -10,7 +10,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand" href="{{ url('/') }}">سامانه پرداخت</a>
+    <a class="navbar-brand" href="{{ url('/') }}">سامانه ثبت نام دوره های مهندس روحی</a>
   </div>
 </nav>
 

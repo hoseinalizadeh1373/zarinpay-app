@@ -22,6 +22,7 @@
       <td>{{ $p->name }}</td>
       <td>{{ $p->phone }}</td>
       <td>{{ $p->item }}</td>
+      <td>{{ $p->uuid }}</td>
       <td>{{ number_format($p->amount) }}</td>
       <td>
         @if($p->status == 'paid')

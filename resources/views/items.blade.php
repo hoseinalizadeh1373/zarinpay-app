@@ -7,22 +7,31 @@
     <p class="lead text-muted mt-3">اپشن های VIP: ثبت نام کلاس های حضوری و آنلاین آموزش ادمینی و رشد سریع پیج</p>
 </div>
 
-<div class="row justify-content-center mb-4">
-    <div class="col-md-8">
-        <ul class="list-group list-group-flush mb-4">
-    <li class="">
-        <i class="bi bi-award-fill text-primary me-2"></i>
-        مدرک معتبر وزارت علوم و دانشگاه
-    </li>
-    <li class="">
-        <i class="bi bi-mortarboard-fill text-success me-2"></i>
-        مدرک معتبر فنی و حرفه ای
-    </li>
-    <li class="">
-        <i class="bi bi-lightbulb-fill text-warning me-2"></i>
-        120 ایده مخصوص هر پیج برای پست/استوری/ریلز/لایو
-    </li>
-</ul>
+<div class="row justify-content-center mb-4 align-items-center">
+   
+    <div class="col-md-6">
+        <ul class="list-group list-group-flush mb-0">
+            <li class="mb-2">
+                <i class="bi bi-award-fill text-primary me-2"></i>
+                مدرک معتبر وزارت علوم و دانشگاه
+            </li>
+            <li class="mb-2">
+                <i class="bi bi-mortarboard-fill text-success me-2"></i>
+                مدرک معتبر فنی و حرفه ای
+            </li>
+            <li>
+                <i class="bi bi-lightbulb-fill text-warning me-2"></i>
+                120 ایده مخصوص هر پیج برای پست/استوری/ریلز/لایو
+            </li>
+        </ul>
+    </div>
+     <div class="col-md-2 text-center">
+        <img src="{{ asset('images/person.jpg') }}" alt="صاحب سایت" class="rounded-circle" style="width:120px; height:120px; object-fit:cover;">
+    </div>
+</div>
+
+</div>
+
 
         <p class="text-center fw-bold fs-5" >هدف آموزش‌ها: آماده سازی زیرساخت پیج برای فروش کمپینی</p>
     </div>

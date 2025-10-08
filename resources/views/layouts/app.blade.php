@@ -18,9 +18,7 @@
   @yield('content')
 </main>
 
-<footer class="bg-dark text-white text-center py-3 mt-5">
-  <small>© {{ date('Y') }} تمامی حقوق محفوظ است</small>
-</footer>
+
 
 </body>
 </html>

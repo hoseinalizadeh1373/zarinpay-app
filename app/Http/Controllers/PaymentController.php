@@ -16,22 +16,27 @@ class PaymentController extends Controller
     {
         // دو آیتم ثابت — اگر خواستی از DB هم بیاری
         $items = [
-            ['id'=>'itemA','title'=>'آیتم A','amount'=>10000],
-            ['id'=>'itemB','title'=>'آیتم B','amount'=>20000],
+            ['id'=>'inpersonCourse','title'=>'دروه حضوری','amount'=>2890000],
+            ['id'=>'onlineCourse','title'=>'دوره آنلاین','amount'=>1830000],
         ];
         return view('items', compact('items'));
     }
 
-    public function showForm($item)
-    {
-        $items = [
-            'itemA' => ['title'=>'آیتم A','amount'=>10000],
-            'itemB' => ['title'=>'آیتم B','amount'=>20000],
-        ];
-        if (!isset($items[$item])) abort(404);
-        $data = $items[$item];
-        return view('purchase', ['itemKey'=>$item, 'item'=>$data]);
-    }
+   public function showForm($item)
+{
+    $items = [
+        ['id'=>'inpersonCourse','title'=>'دوره حضوری','amount'=>2890000],
+        ['id'=>'onlineCourse','title'=>'دوره آنلاین','amount'=>1830000],
+    ];
+
+    // جستجو در آرایه بر اساس id
+    $data = collect($items)->firstWhere('id', $item);
+
+    if (!$data) abort(404);
+
+    return view('purchase', ['itemKey'=>$item, 'item'=>$data]);
+}
+
 
     public function startPayment(Request $request)
     {
@@ -65,7 +70,7 @@ class PaymentController extends Controller
         $payment->amount = $amount;
         $payment->name = $name;
         $payment->phone = $phone;
-        $payment->uuid = Str::uuid()->toString();
+        $payment->uuid = Str::upper(Str::random(5));
         $payment->save();
     })
     ->pay();

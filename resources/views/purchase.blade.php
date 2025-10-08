@@ -4,6 +4,7 @@
 @section('content')
 <div class="card mx-auto" style="max-width: 500px;">
   <div class="card-body">
+    
     <h5 class="card-title text-center mb-3">فرم پرداخت {{ $item['title'] }}</h5>
     <form method="POST" action="{{ url('/purchase') }}">
       @csrf

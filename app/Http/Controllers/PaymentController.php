@@ -67,23 +67,23 @@ class PaymentController extends Controller
         // $description = "خرید {$request->item} - سفارش #{$payment->id}";
 
 
-         $thing = zainpayment::config($config)
-        ->callBackUrl(url("/") . '/payment/callback')
-        ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name,$item) {
-            
-            $payment = new Payment();
-            $payment->transaction_id = $transactionId;
-            $payment->item = $item;
-            $payment->amount = $amount;
-            $payment->name = $name;
-            $payment->phone = $phone;
-            $payment->uuid = random_int(100000000,9999999999);
-            
-            $payment->save();
-            
-        })->pay();
-        
-return $thing->redirect();
+       $response = zainpayment::config($config)
+    ->callBackUrl(url("/") . '/payment/callback')
+    ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name,$item) {
+        $payment = new Payment();
+        $payment->transaction_id = $transactionId;
+        $payment->item = $item;
+        $payment->amount = $amount;
+        $payment->name = $name;
+        $payment->phone = $phone;
+        $payment->uuid = random_int(100000000,9999999999);
+        $payment->save();
+    })
+    ->pay();
+
+// حالا به آدرس درگاه ریدایرکت کن
+return redirect()->away($response->getAction());
+
 
 
         // $email = null;

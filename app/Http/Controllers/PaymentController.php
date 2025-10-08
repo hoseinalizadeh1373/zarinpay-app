@@ -83,7 +83,8 @@ class PaymentController extends Controller
             
         })->pay();
         
-return $thing;
+return $thing->redirect();
+
 
         // $email = null;
         // $mobile = $request->phone;

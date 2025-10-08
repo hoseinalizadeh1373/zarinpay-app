@@ -126,9 +126,9 @@ return redirect()->away($response->getAction());
         
         $authority = $request->get('Authority');
         $status = $request->get('Status');
-        $payment_id = $request->get('payment_id');
+        // $payment_id = $request->get('payment_id');
 
-        $payment = Payment::find($payment_id);
+        $payment = Payment::where('transaction_id', $authority)->first();
         if (!$payment) abort(404);
 
         if ($status == 'OK') {

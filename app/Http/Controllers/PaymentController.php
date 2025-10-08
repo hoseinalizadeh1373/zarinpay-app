@@ -131,39 +131,72 @@ return redirect()->away($response->getAction());
         $payment = Payment::where('transaction_id', $authority)->first();
         if (!$payment) abort(404);
 
-        if ($status == 'OK') {
-            $merchant = env('ZARINPAL_MERCHANT_ID');
-            $isSandbox = env('ZARINPAL_SANDBOX', true);
-            $base = $isSandbox ? 'https://sandbox.zarinpal.com/pg/rest/WebGate/' : 'https://www.zarinpal.com/pg/rest/WebGate/';
 
-            $response = Http::post($base.'PaymentVerification.json', [
-                'MerchantID' => $merchant,
-                'Authority' => $authority,
-                'Amount' => $payment->amount,
-            ]);
+         $config = [
+            "merchantId"=> env('ZARINPAL_MERCHANT_ID') ?? "12345678901234567890123456",
+            "mode" =>  "sandbox",
+        ];
 
-            if ($response->ok()) {
-                $res = $response->json();
-                if (isset($res['Status']) && ($res['Status'] == 100 || $res['Status'] == 101)) {
-                    // پرداخت موفق
-                    $payment->update([
-                        'status'=>'paid',
-                        'ref_id'=>$res['RefID'] ?? null,
-                        'meta'=>$res
-                    ]);
-                    return redirect()->route('thankyou')->with('success','پرداخت با موفقیت انجام شد.');
-                } else {
-                    $payment->update(['status'=>'failed','meta'=>$res]);
-                    return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
-                }
-            } else {
-                $payment->update(['status'=>'failed','meta'=>$response->body()]);
-                return redirect()->route('thankyou')->with('error','خطا در تایید پرداخت.');
+
+        Log::info($paymentRecord->transaction_id);
+
+        try {
+            Log::info($request->get('status'),"status");
+            if(request()->get('Status') =='NOK'){
+                
+                return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
+
             }
-        } else {
-            $payment->update(['status'=>'failed','meta'=>['status'=>$status,'authority'=>$authority]]);
-            return redirect()->route('thankyou')->with('error','پرداخت لغو شد یا ناموفق بود.');
+            $receipt = zainpayment::config($config)->amount($paymentRecord->amount)
+                ->transactionId($paymentRecord->transaction_id)
+                ->verify();
+
+            $paymentRecord->ref_id = $receipt->getReferenceId();
+            $paymentRecord->pay_at = Carbon::now();
+            $paymentRecord->save();
+            
+            $user = User::find($paymentRecord->user_id);
+            $user->increaseBalance($paymentRecord->amount,$paymentRecord, Transaction::TYPE_WALLET_RECHARGE);
+              return redirect()->route('thankyou')->with('success','پرداخت با موفقیت انجام شد.');
+        
+        } catch (InvalidPaymentException $exception) {
+            Log::error($exception->getMessage(),request()->all());
+            return redirect()->to("/wallet/error");
         }
+
+        // if ($status == 'OK') {
+        //     $merchant = env('ZARINPAL_MERCHANT_ID');
+        //     $isSandbox = env('ZARINPAL_SANDBOX', true);
+        //     $base = $isSandbox ? 'https://sandbox.zarinpal.com/pg/rest/WebGate/' : 'https://www.zarinpal.com/pg/rest/WebGate/';
+
+        //     $response = Http::post($base.'PaymentVerification.json', [
+        //         'MerchantID' => $merchant,
+        //         'Authority' => $authority,
+        //         'Amount' => $payment->amount,
+        //     ]);
+
+        //     if ($response->ok()) {
+        //         $res = $response->json();
+        //         if (isset($res['Status']) && ($res['Status'] == 100 || $res['Status'] == 101)) {
+        //             // پرداخت موفق
+        //             $payment->update([
+        //                 'status'=>'paid',
+        //                 'ref_id'=>$res['RefID'] ?? null,
+        //                 'meta'=>$res
+        //             ]);
+        //             return redirect()->route('thankyou')->with('success','پرداخت با موفقیت انجام شد.');
+        //         } else {
+        //             $payment->update(['status'=>'failed','meta'=>$res]);
+        //             return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
+        //         }
+        //     } else {
+        //         $payment->update(['status'=>'failed','meta'=>$response->body()]);
+        //         return redirect()->route('thankyou')->with('error','خطا در تایید پرداخت.');
+        //     }
+        // } else {
+        //     $payment->update(['status'=>'failed','meta'=>['status'=>$status,'authority'=>$authority]]);
+        //     return redirect()->route('thankyou')->with('error','پرداخت لغو شد یا ناموفق بود.');
+        // }
     }
 
     public function thankyou()

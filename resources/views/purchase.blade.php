@@ -5,7 +5,18 @@
 <div class="card mx-auto" style="max-width: 500px;">
   <div class="card-body">
     
-    <h5 class="card-title text-center mb-3">فرم پرداخت {{ $item['title'] }}</h5>
+    <h3 class="card-title text-center mb-3">
+    فرم پرداخت 
+    <span class="text-secondary">{{ $item['title'] }}</span>
+</h3>
+
+    <h5 class="card-title text-center mb-3"> </h5>
+    <h3 class="card-title text-center mb-3">
+    مبلغ
+    <span class="text-info">{{ number_format($item['amount']) }}</span>
+</h3>
+
+
     <form method="POST" action="{{ url('/purchase') }}">
       @csrf
       <input type="hidden" name="item" value="{{ $itemKey }}">

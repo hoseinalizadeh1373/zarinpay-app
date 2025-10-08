@@ -62,18 +62,18 @@ class PaymentController extends Controller
 
 
        $response = zainpayment::config($config)
-    ->callBackUrl(url("/") . '/payment/callback')
-    ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name,$item) {
-        $payment = new Payment();
-        $payment->transaction_id = $transactionId;
-        $payment->item = $item;
-        $payment->amount = $amount;
-        $payment->name = $name;
-        $payment->phone = $phone;
-        $payment->uuid = Str::upper(Str::random(5));
-        $payment->save();
-    })
-    ->pay();
+        ->callBackUrl(url("/") . '/payment/callback')
+        ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name,$item) {
+            $payment = new Payment();
+            $payment->transaction_id = $transactionId;
+            $payment->item = $item;
+            $payment->amount = $amount;
+            $payment->name = $name;
+            $payment->phone = $phone;
+            $payment->uuid = Str::upper(Str::random(5));
+            $payment->save();
+        })
+        ->pay();
 
 // حالا به آدرس درگاه ریدایرکت کن
 return redirect()->away($response->getAction());
@@ -97,9 +97,6 @@ return redirect()->away($response->getAction());
             "mode" =>  "sandbox",
         ];
 
-
-        
-
         try {
             Log::info($request->get('status')."status");
             if(request()->get('Status') =='NOK'){
@@ -116,8 +113,8 @@ return redirect()->away($response->getAction());
             $payment->save();
             
              return redirect()->route('thankyou')
-    ->with('success','پرداخت با موفقیت انجام شد.')
-    ->with('payment_uuid', $payment->uuid);
+            ->with('success','پرداخت با موفقیت انجام شد.')
+            ->with('payment_uuid', $payment->uuid);
 
         
         } catch (InvalidPaymentException $exception) {

@@ -109,6 +109,7 @@ return redirect()->away($response->getAction());
 
             $payment->ref_id = $receipt->getReferenceId();
             // $payment->pay_at = Carbon::now();
+            $payment->status = "paid";
             $payment->save();
             
              return redirect()->route('track')

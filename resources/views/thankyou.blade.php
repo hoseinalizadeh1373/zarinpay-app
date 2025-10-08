@@ -9,7 +9,15 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <h3>با تشکر از شما 🙏</h3>
+    {{-- نمایش UUID تراکنش --}}
+    @if(session('payment_uuid'))
+        <div class="alert alert-info mt-3">
+            شناسه پیگیری شما: <strong>{{ session('payment_uuid') }}</strong><br>
+            می‌توانید با این شناسه وضعیت پرداخت خود را پیگیری کنید.
+        </div>
+    @endif
+
+    <h3 class="mt-4">با تشکر از شما 🙏</h3>
     <a href="{{ url('/') }}" class="btn btn-primary mt-4">بازگشت به صفحه اصلی</a>
 </div>
 @endsection

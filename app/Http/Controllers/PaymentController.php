@@ -9,6 +9,7 @@ use Shetabit\Multipay\Invoice;
 use Log;
 use Shetabit\Payment\Facade\Payment as zainpayment;
 
+
 class PaymentController extends Controller
 {
     public function index()
@@ -41,14 +42,6 @@ class PaymentController extends Controller
             'amount'=>'required|integer|min:1',
         ]);
 
-        // $payment = Payment::create([
-        //     'item'=>$request->item,
-        //     'name'=>$request->name,
-        //     'phone'=>$request->phone,
-        //     'amount'=>$request->amount,
-        //     'status'=>'pending'
-        // ]);
-
           $amount = $request->amount;
           $phone = $request->phone;
            $item = $request->item;
@@ -63,11 +56,6 @@ class PaymentController extends Controller
         ];
 
 
-        // $merchant = env('ZARINPAL_MERCHANT_ID');
-        // $callbackUrl = url('/payment/callback?payment_id='.$payment->id);
-        // $description = "خرید {$request->item} - سفارش #{$payment->id}";
-
-
        $response = zainpayment::config($config)
     ->callBackUrl(url("/") . '/payment/callback')
     ->purchase($invoice, function($driver, $transactionId) use($amount,$phone,$name,$item) {
@@ -77,7 +65,7 @@ class PaymentController extends Controller
         $payment->amount = $amount;
         $payment->name = $name;
         $payment->phone = $phone;
-        $payment->uuid = random_int(100000000,9999999999);
+        $payment->uuid = Str::uuid()->toString();
         $payment->save();
     })
     ->pay();
@@ -85,40 +73,6 @@ class PaymentController extends Controller
 // حالا به آدرس درگاه ریدایرکت کن
 return redirect()->away($response->getAction());
 
-
-
-        // $email = null;
-        // $mobile = $request->phone;
-
-        // // endpoint (sandbox vs production)
-        // $isSandbox = env('ZARINPAL_SANDBOX', true);
-        // $base = $isSandbox ? 'https://sandbox.zarinpal.com/pg/rest/WebGate/' : 'https://www.zarinpal.com/pg/rest/WebGate/';
-
-        // // درخواست ایجاد پرداخت
-        // $response = Http::post($base.'PaymentRequest.json', [
-        //     'MerchantID' => $merchant,
-        //     'Amount' => $payment->amount,
-        //     'CallbackURL' => $callbackUrl,
-        //     'Description' => $description,
-        //     'Email' => $email,
-        //     'Mobile' => $mobile,
-        // ]);
-
-        // if ($response->ok()) {
-        //     $res = $response->json();
-        //     if (isset($res['Status']) && $res['Status'] == 100 && isset($res['Authority'])) {
-        //         $authority = $res['Authority'];
-        //         $payment->update(['authority'=>$authority]);
-        //         $startPay = $isSandbox ? "https://sandbox.zarinpal.com/pg/StartPay/{$authority}" : "https://www.zarinpal.com/pg/StartPay/{$authority}";
-        //         return redirect()->away($startPay);
-        //     } else {
-        //         $payment->update(['status'=>'failed', 'meta'=>$res]);
-        //         return back()->with('error','خطا در ایجاد پرداخت: '.$res['Status'] ?? 'unknown');
-        //     }
-        // } else {
-        //     $payment->update(['status'=>'failed','meta'=>$response->body()]);
-        //     return back()->with('error','خطا در اتصال به درگاه پرداخت.');
-        // }
     }
 
     public function callback(Request $request)
@@ -156,46 +110,17 @@ return redirect()->away($response->getAction());
             // $payment->pay_at = Carbon::now();
             $payment->save();
             
-              return redirect()->route('thankyou')->with('success','پرداخت با موفقیت انجام شد.');
+             return redirect()->route('thankyou')
+    ->with('success','پرداخت با موفقیت انجام شد.')
+    ->with('payment_uuid', $payment->uuid);
+
         
         } catch (InvalidPaymentException $exception) {
             Log::error($exception->getMessage(),request()->all());
-            return redirect()->to("/wallet/error");
+           return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
         }
 
-        // if ($status == 'OK') {
-        //     $merchant = env('ZARINPAL_MERCHANT_ID');
-        //     $isSandbox = env('ZARINPAL_SANDBOX', true);
-        //     $base = $isSandbox ? 'https://sandbox.zarinpal.com/pg/rest/WebGate/' : 'https://www.zarinpal.com/pg/rest/WebGate/';
-
-        //     $response = Http::post($base.'PaymentVerification.json', [
-        //         'MerchantID' => $merchant,
-        //         'Authority' => $authority,
-        //         'Amount' => $payment->amount,
-        //     ]);
-
-        //     if ($response->ok()) {
-        //         $res = $response->json();
-        //         if (isset($res['Status']) && ($res['Status'] == 100 || $res['Status'] == 101)) {
-        //             // پرداخت موفق
-        //             $payment->update([
-        //                 'status'=>'paid',
-        //                 'ref_id'=>$res['RefID'] ?? null,
-        //                 'meta'=>$res
-        //             ]);
-        //             return redirect()->route('thankyou')->with('success','پرداخت با موفقیت انجام شد.');
-        //         } else {
-        //             $payment->update(['status'=>'failed','meta'=>$res]);
-        //             return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
-        //         }
-        //     } else {
-        //         $payment->update(['status'=>'failed','meta'=>$response->body()]);
-        //         return redirect()->route('thankyou')->with('error','خطا در تایید پرداخت.');
-        //     }
-        // } else {
-        //     $payment->update(['status'=>'failed','meta'=>['status'=>$status,'authority'=>$authority]]);
-        //     return redirect()->route('thankyou')->with('error','پرداخت لغو شد یا ناموفق بود.');
-        // }
+      
     }
 
     public function thankyou()

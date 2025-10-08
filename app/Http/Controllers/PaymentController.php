@@ -99,11 +99,10 @@ return redirect()->away($response->getAction());
 
         try {
             Log::info($request->get('status')."status");
-            if(request()->get('Status') =='NOK'){
-                
-                return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: ');
+           if(request()->get('Status') =='NOK'){
+    return redirect()->route('track')->with('error','موجودی یا خطا در تایید پرداخت: ');
+}
 
-            }
             $receipt = zainpayment::config($config)->amount($payment->amount)
                 ->transactionId($payment->transaction_id)
                 ->verify();
@@ -112,14 +111,15 @@ return redirect()->away($response->getAction());
             // $payment->pay_at = Carbon::now();
             $payment->save();
             
-             return redirect()->route('thankyou')
-            ->with('success','پرداخت با موفقیت انجام شد.')
-            ->with('payment_uuid', $payment->uuid);
+             return redirect()->route('track')
+    ->with('success','پرداخت با موفقیت انجام شد.')
+    ->with('payment_uuid', $payment->uuid);
+
 
         
         } catch (InvalidPaymentException $exception) {
             Log::error($exception->getMessage(),request()->all());
-           return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
+           return redirect()->route('track')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
         }
 
       
@@ -127,6 +127,9 @@ return redirect()->away($response->getAction());
 
     public function thankyou()
     {
+         if (!session()->has('success') && !session()->has('error')) {
+        abort(404); // یا redirect('/')
+    }
         return view('thankyou');
     }
 

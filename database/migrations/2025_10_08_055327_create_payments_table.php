@@ -22,6 +22,7 @@ return new class extends Migration
         $table->string('status')->default('pending'); // pending, paid, failed
         $table->text('meta')->nullable();
         $table->text('uuid')->nullable();
+        $table->text('transaction_id')->nullable();
         $table->timestamps();
     });
 }

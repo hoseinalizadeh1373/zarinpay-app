@@ -139,7 +139,7 @@ return redirect()->away($response->getAction());
         ];
 
 
-        Log::info($paymentRecord->transaction_id);
+        
 
         try {
             Log::info($request->get('status'),"status");

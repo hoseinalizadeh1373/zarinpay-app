@@ -148,13 +148,13 @@ return redirect()->away($response->getAction());
                 return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');
 
             }
-            $receipt = zainpayment::config($config)->amount($paymentRecord->amount)
-                ->transactionId($paymentRecord->transaction_id)
+            $receipt = zainpayment::config($config)->amount($payment->amount)
+                ->transactionId($payment->transaction_id)
                 ->verify();
 
-            $paymentRecord->ref_id = $receipt->getReferenceId();
-            $paymentRecord->pay_at = Carbon::now();
-            $paymentRecord->save();
+            $payment->ref_id = $receipt->getReferenceId();
+            // $payment->pay_at = Carbon::now();
+            $payment>save();
             
             $user = User::find($paymentRecord->user_id);
             $user->increaseBalance($paymentRecord->amount,$paymentRecord, Transaction::TYPE_WALLET_RECHARGE);

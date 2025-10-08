@@ -122,7 +122,8 @@ return redirect()->away($response->getAction());
 
     public function callback(Request $request)
     {
-        // زرین پال بازمی‌گرداند: Authority و Status
+
+        
         $authority = $request->get('Authority');
         $status = $request->get('Status');
         $payment_id = $request->get('payment_id');

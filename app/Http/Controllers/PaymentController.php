@@ -104,7 +104,7 @@ return redirect()->away($response->getAction());
             Log::info($request->get('status')."status");
             if(request()->get('Status') =='NOK'){
                 
-                return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$Status ?? '');
+                return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$status ?? '');
 
             }
             $receipt = zainpayment::config($config)->amount($payment->amount)

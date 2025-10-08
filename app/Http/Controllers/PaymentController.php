@@ -55,7 +55,7 @@ class PaymentController extends Controller
         $invoice->amount($amount);
 
         $config = [
-            "merchantId"=>  "12345678901234567890123456",
+            "merchantId"=> env('ZARINPAL_MERCHANT_ID') ?? "12345678901234567890123456",
             // "mode" => env('ZARINPAL_MERCHANT_ID') ? "zaringate" : "sandbox",
             "mode" => 'sandbox'
         ];

@@ -154,7 +154,7 @@ return redirect()->away($response->getAction());
 
             $payment->ref_id = $receipt->getReferenceId();
             // $payment->pay_at = Carbon::now();
-            $payment>save();
+            $payment->save();
             
             $user = User::find($paymentRecord->user_id);
             $user->increaseBalance($paymentRecord->amount,$paymentRecord, Transaction::TYPE_WALLET_RECHARGE);

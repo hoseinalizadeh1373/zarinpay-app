@@ -1,20 +1,27 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-BpkbXlfZ.css",
+    "file": "assets/app-Dfc5S9pH.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
       "app.css"
     ]
   },
+  "resources/fonts/iranSans.woff": {
+    "file": "assets/iranSans-BIBY-13i.woff",
+    "src": "resources/fonts/iranSans.woff"
+  },
   "resources/js/app.js": {
-    "file": "assets/app-CDNfWKbZ.js",
+    "file": "assets/app-BVBtyGWx.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
       "assets/app-C11chwFa.css",
-      "assets/app-BpkbXlfZ.css"
+      "assets/app-Dfc5S9pH.css"
+    ],
+    "assets": [
+      "assets/iranSans-BIBY-13i.woff"
     ]
   }
 }

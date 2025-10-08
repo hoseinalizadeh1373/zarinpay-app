@@ -36,21 +36,21 @@
                 <h5 class="card-title"></h5>
                 
                 {{-- می‌تونی این متن رو بر اساس id تغییر بدی --}}
-                @if($item['id'] == 'inpersonCourse')
-                    <p class="card-text">
-                         دوره حضوری <br>
-                        ظرفیت: ۴۰ نفر <br>
-                        مبلغ: {{ number_format($item['amount']) }} تومان <br>
-                        محل برگزاری: کاشمر - آموزشگاه فنی حرفه ای
-                    </p>
-                @elseif($item['id'] == 'onlineCourse')
-                    <p class="card-text">
-                         دوره آنلاین <br>
-                        ظرفیت: ۴۰ نفر <br>
-                        مبلغ: {{ number_format($item['amount']) }} تومان <br>
-                        دسترسی از طریق گوگل میت + ویدیوها و اسلایدهای جلسات
-                    </p>
-                @endif
+       @if($item['id'] == 'inpersonCourse')
+    <p class="card-text">
+        <i class="bi bi-building me-2"></i> دوره حضوری <br>
+        <i class="bi bi-people-fill me-2"></i> ظرفیت: ۴۰ نفر <br>
+        <i class="bi bi-currency-dollar me-2"></i> مبلغ: {{ number_format($item['amount']) }} تومان <br>
+        <i class="bi bi-geo-alt me-2"></i> محل برگزاری: کاشمر - آموزشگاه فنی حرفه ای
+    </p>
+@elseif($item['id'] == 'onlineCourse')
+    <p class="card-text">
+        <i class="bi bi-laptop me-2"></i> دوره آنلاین <br>
+        <i class="bi bi-people-fill me-2"></i> ظرفیت: ۴۰ نفر <br>
+        <i class="bi bi-currency-dollar me-2"></i> مبلغ: {{ number_format($item['amount']) }} تومان <br>
+        <i class="bi bi-cloud-arrow-down me-2"></i> دسترسی از طریق گوگل میت + ویدیوها و اسلایدهای جلسات
+    </p>
+@endif
 
                 <a href="{{ url('/purchase/'.$item['id']) }}" class="btn btn-success w-100">ثبت نام</a>
             </div>

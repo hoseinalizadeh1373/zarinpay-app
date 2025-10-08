@@ -142,7 +142,7 @@ return redirect()->away($response->getAction());
         
 
         try {
-            Log::info($request->get('status'),"status");
+            Log::info($request->get('status')."status");
             if(request()->get('Status') =='NOK'){
                 
                 return redirect()->route('thankyou')->with('error','موجودی یا خطا در تایید پرداخت: '.$res['Status'] ?? '');

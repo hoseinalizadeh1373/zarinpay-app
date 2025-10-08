@@ -156,8 +156,6 @@ return redirect()->away($response->getAction());
             // $payment->pay_at = Carbon::now();
             $payment->save();
             
-            $user = User::find($paymentRecord->user_id);
-            $user->increaseBalance($paymentRecord->amount,$paymentRecord, Transaction::TYPE_WALLET_RECHARGE);
               return redirect()->route('thankyou')->with('success','پرداخت با موفقیت انجام شد.');
         
         } catch (InvalidPaymentException $exception) {

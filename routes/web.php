@@ -7,7 +7,7 @@ Route::get('/', [PaymentController::class, 'index'])->name('home');
 
 Route::get('/purchase/{item}', [PaymentController::class, 'showForm'])->name('purchase.form');
 Route::get('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-Route::get('/track', [PaymentController::class, 'thankyou'])->name('thankyou');
+Route::get('/track', [PaymentController::class, 'thankyou'])->name('track');
 
 Route::middleware('admin.basic')->group(function(){
     Route::get('/admin/payments', [PaymentController::class, 'adminIndex'])->name('admin.payments');

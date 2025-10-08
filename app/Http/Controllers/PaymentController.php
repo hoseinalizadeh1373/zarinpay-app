@@ -77,7 +77,7 @@ class PaymentController extends Controller
             $payment->name = $name;
             $payment->phone = $phone;
             $payment->uuid = random_int(100000000,9999999999);
-            $payment->user_id = Auth::user()->id;
+            
             $payment->save();
             
         })->pay();

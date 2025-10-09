@@ -42,6 +42,6 @@
 </table>
 
 <div class="mt-3">
-  <!-- {{ $payments->links() }} -->
+  {{ $payments->links() }}
 </div>
 @endsection

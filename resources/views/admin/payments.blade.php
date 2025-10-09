@@ -35,7 +35,8 @@
         @endif
       </td>
       <td>{{ $p->ref_id ?? '-' }}</td>
-      <td>{{ $p->created_at->format('Y/m/d H:i') }}</td>
+      <td>{{ \Morilog\Jalali\Jalalian::fromDateTime($p->created_at)->format('Y/m/d H:i') }}</td>
+
     </tr>
     @endforeach
   </tbody>

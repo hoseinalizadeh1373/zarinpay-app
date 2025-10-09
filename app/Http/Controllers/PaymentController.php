@@ -136,7 +136,7 @@ return redirect()->away($response->getAction());
 
     public function adminIndex()
     {
-        $payments = Payment::orderBy('created_at','desc')->paginate(20);
+        $payments = Payment::orderBy('created_at','desc')->paginate(10);
         return view('admin.payments', compact('payments'));
     }
 }

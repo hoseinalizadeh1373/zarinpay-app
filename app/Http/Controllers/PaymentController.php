@@ -57,7 +57,7 @@ class PaymentController extends Controller
         $config = [
             "merchantId"=> env('ZARINPAL_MERCHANT_ID') ?? "12345678901234567890123456",
             // "mode" => env('ZARINPAL_MERCHANT_ID') ? "zaringate" : "sandbox",
-            "mode" => 'sandbox'
+            "mode" => 'normal'
         ];
 
 
@@ -94,7 +94,7 @@ return redirect()->away($response->getAction());
 
          $config = [
             "merchantId"=> env('ZARINPAL_MERCHANT_ID') ?? "12345678901234567890123456",
-            "mode" =>  "sandbox",
+            "mode" =>  "normal",
         ];
 
         try {
